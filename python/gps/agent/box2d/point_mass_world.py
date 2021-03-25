@@ -1,7 +1,7 @@
 """ This file defines an environment for the Box2D PointMass simulator. """
 import numpy as np
 import Box2D as b2
-from framework import Framework
+from .framework import Framework
 
 from gps.agent.box2d.settings import fwSettings
 from gps.proto.gps_pb2 import END_EFFECTOR_POINTS, END_EFFECTOR_POINT_VELOCITIES
@@ -15,6 +15,10 @@ class PointMassWorld(Framework):
             super(PointMassWorld, self).__init__()
         else:
             self.world = b2.b2World(gravity=(0, -10), doSleep=True)
+
+        x0 = np.asfarray(x0)
+        target = np.asfarray(target)
+        
         self.world.gravity = (0.0, 0.0)
         self.initial_position = (x0[0], x0[1])
         self.initial_angle = b2.b2_pi

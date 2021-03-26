@@ -10,7 +10,7 @@
 #  NUMPY_VERSION_MINOR       - the minor version number of NumPy
 #  NUMPY_VERSION_PATCH       - the patch version number of NumPy
 #  NUMPY_VERSION_DECIMAL     - e.g. version 1.6.1 is 10601
-#  NUMPY_INCLUDE_DIRS        - path to the NumPy include files
+#  Python3_NUMPY_INCLUDE_DIRS        - path to the NumPy include files
 
 #============================================================================
 # Copyright 2012 Continuum Analytics, Inc.
@@ -39,17 +39,9 @@
 #============================================================================
 
 # Finding NumPy involves calling the Python interpreter
-if(NumPy_FIND_REQUIRED)
-    find_package(PythonInterp REQUIRED)
-else()
-    find_package(PythonInterp)
-endif()
+find_package (Python3 COMPONENTS Interpreter)
 
-if(NOT PYTHONINTERP_FOUND)
-    set(NUMPY_FOUND FALSE)
-endif()
-
-execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+execute_process(COMMAND "${Python_EXECUTABLE}" "-c"
     "import numpy as n; print(n.__version__); print(n.get_include());"
     RESULT_VARIABLE _NUMPY_SEARCH_SUCCESS
     OUTPUT_VARIABLE _NUMPY_VALUES
@@ -68,10 +60,10 @@ endif()
 string(REGEX REPLACE ";" "\\\\;" _NUMPY_VALUES ${_NUMPY_VALUES})
 string(REGEX REPLACE "\n" ";" _NUMPY_VALUES ${_NUMPY_VALUES})
 list(GET _NUMPY_VALUES 0 NUMPY_VERSION)
-list(GET _NUMPY_VALUES 1 NUMPY_INCLUDE_DIRS)
+list(GET _NUMPY_VALUES 1 Python3_NUMPY_INCLUDE_DIRS)
 
 # Make sure all directory separators are '/'
-string(REGEX REPLACE "\\\\" "/" NUMPY_INCLUDE_DIRS ${NUMPY_INCLUDE_DIRS})
+string(REGEX REPLACE "\\\\" "/" Python3_NUMPY_INCLUDE_DIRS ${Python3_NUMPY_INCLUDE_DIRS})
 
 # Get the major and minor version numbers
 string(REGEX REPLACE "\\." ";" _NUMPY_VERSION_LIST ${NUMPY_VERSION})
@@ -83,8 +75,8 @@ math(EXPR NUMPY_VERSION_DECIMAL
     "(${NUMPY_VERSION_MAJOR} * 10000) + (${NUMPY_VERSION_MINOR} * 100) + ${NUMPY_VERSION_PATCH}")
 
 find_package_message(NUMPY
-    "Found NumPy: version \"${NUMPY_VERSION}\" ${NUMPY_INCLUDE_DIRS}"
-    "${NUMPY_INCLUDE_DIRS}${NUMPY_VERSION}")
+    "Found NumPy: version \"${NUMPY_VERSION}\" ${Python3_NUMPY_INCLUDE_DIRS}"
+    "${Python3_NUMPY_INCLUDE_DIRS}${NUMPY_VERSION}")
 
 set(NUMPY_FOUND TRUE)
 

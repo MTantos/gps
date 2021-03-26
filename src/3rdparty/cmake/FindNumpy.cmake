@@ -51,6 +51,7 @@ find_path(_PYTHON_NUMPY_INCLUDE_DIR arrayobject.h
           "${NUMPY_PATH}/numpy/"
           "${PYTHON_INCLUDE_PATH}/numpy/"
 	  "~/anaconda/lib/python2.7/site-packages/numpy/core/include/numpy"
+          /usr/include/python3.8/numpy/
           /usr/include/python2.6/numpy/
           /usr/include/python2.5/numpy/
           /usr/include/python2.4/numpy/

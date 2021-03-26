@@ -1,3 +1,4 @@
+project(ProjectName)
 cmake_minimum_required(VERSION 2.6)
 
 if (GCC)
@@ -23,9 +24,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin CACHE PATH "Output di
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-find_package(Boost COMPONENTS python REQUIRED)
-find_package(PythonLibs 2.7 REQUIRED)
-find_package(Numpy)
+find_package(Boost COMPONENTS python38 REQUIRED)
+find_package (Python3 COMPONENTS Interpreter Development NumPy)
 
 include(${CMAKE_SOURCE_DIR}/cmake/boost-python.cmake)
 

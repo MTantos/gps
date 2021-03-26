@@ -5,8 +5,8 @@
 #
 #  PYTHONLIBS_FOUND           - have the Python libs been found
 #  PYTHON_PREFIX              - path to the Python installation
-#  PYTHON_LIBRARIES           - path to the python library
-#  PYTHON_INCLUDE_DIRS        - path to where Python.h is found
+#  Python3_LIBRARIES           - path to the python library
+#  Python3_INCLUDE_DIRS        - path to where Python.h is found
 #  PYTHON_SITE_PACKAGES       - path to installation site-packages
 #  PYTHON_IS_DEBUG            - whether the Python interpreter is a debug build
 #
@@ -52,21 +52,12 @@
 #  License text for the above reference.)
 
 # Use the Python interpreter to find the libs.
-if(PythonLibsNew_FIND_REQUIRED)
-    find_package(PythonInterp REQUIRED)
-else()
-    find_package(PythonInterp)
-endif()
-
-if(NOT PYTHONINTERP_FOUND)
-    set(PYTHONLIBS_FOUND FALSE)
-    return()
-endif()
+find_package (Python3 COMPONENTS Interpreter Development NumPy)
 
 # According to http://stackoverflow.com/questions/646518/python-how-to-detect-debug-interpreter
 # testing whether sys has the gettotalrefcount function is a reliable, cross-platform
 # way to detect a CPython debug interpreter.
-execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
+execute_process(COMMAND "${Python_EXECUTABLE}" "-c"
     "from distutils import sysconfig as s;import sys;import struct;
 print('.'.join(str(v) for v in sys.version_info));
 print(s.PREFIX);
@@ -163,14 +154,14 @@ MARK_AS_ADVANCED(
 # cache entries because they are meant to specify the location of a single
 # library. We now set the variables listed by the documentation for this
 # module.
-SET(PYTHON_INCLUDE_DIRS "${PYTHON_INCLUDE_DIR}")
-SET(PYTHON_LIBRARIES "${PYTHON_LIBRARY}")
+SET(Python3_INCLUDE_DIRS "${PYTHON_INCLUDE_DIR}")
+SET(Python3_LIBRARIES "${PYTHON_LIBRARY}")
 SET(PYTHON_DEBUG_LIBRARIES "${PYTHON_DEBUG_LIBRARY}")
 
 
 # Don't know how to get to this directory, just doing something simple :P
 #INCLUDE(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
-#FIND_PACKAGE_HANDLE_STANDARD_ARGS(PythonLibs DEFAULT_MSG PYTHON_LIBRARIES PYTHON_INCLUDE_DIRS)
+#FIND_PACKAGE_HANDLE_STANDARD_ARGS(PythonLibs DEFAULT_MSG Python3_LIBRARIES Python3_INCLUDE_DIRS)
 find_package_message(PYTHON
     "Found PythonLibs: ${PYTHON_LIBRARY}"
     "${PYTHON_EXECUTABLE}${PYTHON_VERSION}")
@@ -198,7 +189,7 @@ FUNCTION(PYTHON_ADD_MODULE _NAME )
 
     SET_PROPERTY(GLOBAL  APPEND  PROPERTY  PY_MODULES_LIST ${_NAME})
     ADD_LIBRARY(${_NAME} ${PY_MODULE_TYPE} ${ARGN})
-    TARGET_LINK_LIBRARIES(${_NAME} ${PYTHON_LIBRARIES})
+    TARGET_LINK_LIBRARIES(${_NAME} ${Python3_LIBRARIES})
 
     IF(PYTHON_MODULE_${_NAME}_BUILD_SHARED)
       SET_TARGET_PROPERTIES(${_NAME} PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}")

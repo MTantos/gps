@@ -2,11 +2,11 @@ function(boost_python_module NAME)
 
   set(DEP_LIBS
     ${Boost_PYTHON_LIBRARY}
-    ${PYTHON_LIBRARIES}
+    ${Python3_LIBRARIES}
     )
   #these are required includes for every ecto module
   include_directories(
-    ${PYTHON_INCLUDE_PATH}
+    ${Python3_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     )
   add_library(${NAME} SHARED

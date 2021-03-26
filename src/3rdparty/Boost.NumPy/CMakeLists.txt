@@ -11,15 +11,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libs/numpy/cmake ${CMAKE_MODUL
 # matches the source tree.
 
 # find required python packages
-find_package(PythonLibs 2.7 REQUIRED)
-find_package(NumPy REQUIRED)
+find_package (Python3 COMPONENTS Interpreter Development NumPy)
 
 # find boost
 # 
 # set(Boost_USE_STATIC_LIBS ON)
 # set(Boost_USE_MULTITHREADED ON) 
 # set(Boost_USE_STATIC_RUNTIME ON)
-FIND_PACKAGE(Boost COMPONENTS python REQUIRED)
+FIND_PACKAGE(Boost COMPONENTS python38 REQUIRED)
 
 message( STATUS "found boost:"
   "\nINCLUDE: ${Boost_INCLUDE_DIRS}"
@@ -43,7 +42,7 @@ set(BUILD_DOCS OFF CACHE BOOL "Build Boost.NumPy Documentation")
 # logic for configuring documentation generation
 if(BUILD_DOCS)
   # find sphinx
-  EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c "import sphinx; print sphinx.__version__"
+  EXECUTE_PROCESS(COMMAND ${Python_EXECUTABLE} -c "import sphinx; print sphinx.__version__"
     RESULT_VARIABLE SPHINX_PROCESS
     OUTPUT_VARIABLE SPHINX_VERSION
     OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -84,8 +83,8 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 # global settings for include paths
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
-  ${PYTHON_INCLUDE_DIRS}
-  ${NUMPY_INCLUDE_DIRS}
+  ${Python3_INCLUDE_DIRS}
+  ${Python3_NUMPY_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS} 
   )
 
